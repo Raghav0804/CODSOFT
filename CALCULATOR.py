@@ -1,0 +1,59 @@
+from tkinter import *
+
+# Create the main window
+window = Tk()
+window.title("Arithmetic Calculator")
+window.geometry('300x200')
+
+# Function to perform calculation
+def calculate():
+    try:
+        num1 = float(entry1.get())
+        num2 = float(entry2.get())
+    except ValueError:
+        result_label.config(text="Please enter valid numbers.")
+        return
+
+    operation = operation_var.get()
+    if operation == "+":
+        result = num1 + num2
+    elif operation == "-":
+        result = num1 - num2
+    elif operation == "*":
+        result = num1 * num2
+    elif operation == "/":
+        if num2 == 0:
+            result_label.config(text="Cannot divide by zero.")
+            return
+        result = num1 / num2
+    else:
+        result_label.config(text="Select an operation.")
+        return
+
+    result_label.config(text=f"Result: {result}")
+
+# Input fields
+Label(window, text="Number 1:").grid(row=0, column=0, padx=10, pady=5)
+entry1 = Entry(window)
+entry1.grid(row=0, column=1, padx=10, pady=5)
+
+Label(window, text="Number 2:").grid(row=1, column=0, padx=10, pady=5)
+entry2 = Entry(window)
+entry2.grid(row=1, column=1, padx=10, pady=5)
+
+# Radio buttons for operations
+Label(window, text="Operation:").grid(row=2, column=0, padx=10, pady=5)
+operation_var = StringVar(value="+")
+frame = Frame(window)
+frame.grid(row=2, column=1)
+
+for symbol in ["+", "-", "*", "/"]:
+    Radiobutton(frame, text=symbol, variable=operation_var, value=symbol).pack(side=LEFT)
+
+# Calculate button and result label
+Button(window, text="Calculate", command=calculate).grid(row=3, column=0, columnspan=2, pady=10)
+result_label = Label(window, text="Result:")
+result_label.grid(row=4, column=0, columnspan=2, pady=5)
+
+# Start the GUI loop
+window.mainloop()
